@@ -1,0 +1,10 @@
+(= __ (.toUpperCase "hello world"))
+
+"HELLO WORLD"
+
+user=> (= "HELLO WORLD" (.toUpperCase "hello world"))
+true
+
+;; Just for fun...
+user=> (= (.toUpperCase "hello world") (.toUpperCase "hello world"))
+true
