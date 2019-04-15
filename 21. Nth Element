@@ -1,0 +1,17 @@
+; Write a function which returns the Nth element from a sequence - WITHOUT USING 'nth' function.
+
+(= (__ '(4 5 6 7) 2) 6)
+(= (__ [:a :b :c] 0) :a)
+(= (__ [1 2 3 4] 1) 2)
+(= (__ '([1 2] [3 4] [5 6]) 2) [5 6])
+
+; (sigh) this is so easy if you use it...
+(= (nth '(4 5 6 7) 2) 6)
+
+; This is ugly but...
+
+(fn [x y] (last (first (split-at (inc y) x))))
+
+
+user=> (= ((fn [x y] (last (first (split-at (inc y) x)))) '(4 5 6 7) 2) 6)
+true
