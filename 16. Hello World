@@ -1,0 +1,10 @@
+; Write a function which returns a personalized greeting.
+
+(= (__ "Dave") "Hello, Dave!")
+
+; Both work
+format "Hello, %s!"
+#(str "Hello, " %1 "!")
+
+user=> (= (#(str "Hello, " %1 "!") "Dave") "Hello, Dave!")
+true
