@@ -1,0 +1,8 @@
+; Clojure has many different ways to create functions.
+
+(= __ ((fn add-five [x] (+ x 5)) 3))  ; named function with named parameter
+(= __ ((fn [x] (+ x 5)) 3))           ; anonymous function with named parameter
+(= __ (#(+ % 5) 3))                   ; (shortcut) anonymous function with anonymous (enumerated) parameter(s)
+(= __ ((partial + 5) 3))              ; argument expansion (here expands the arguments to the '+' function, 5 and 3).
+
+8
