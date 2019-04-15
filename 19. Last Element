@@ -1,0 +1,13 @@
+; Write a function which returns the last element in a sequence.
+
+(= (__ [1 2 3 4 5]) 5)
+
+; This works, but it's not allowed.
+last
+
+; These also work.
+(fn get-last [x] (nth x (dec (count x))))
+(fn get-last [x] (first (reverse x)))
+
+user=> (= ((fn get-last [x] (nth x (dec (count x)))) [1 2 3 4 5]) 5)
+true
