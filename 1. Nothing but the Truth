@@ -1,0 +1,6 @@
+(= __ true)
+
+true
+
+user=> (= true true)
+true
