@@ -1,0 +1,20 @@
+; Write a function which returns the total number of elements in a sequence - WITHOUT USING 'count' function.
+
+(= (__ '(1 2 3 3 1)) 5)
+(= (__ "Hello World") 11)
+(= (__ [[1 2] [3 4] [5 6]]) 3)
+(= (__ '(13)) 1)
+(= (__ '(:a :b :c)) 3)
+
+;; This works as a function.
+(defn recursive-count
+    ([s]
+        (recursive-count s 0))
+    ([s iteration]
+        ; (println iteration)
+        (if (empty? s)
+            iteration
+            (recursive-count (rest s) (inc iteration)))))
+
+; One-liner without "def"
+(fn recursive-count ([s]  (recursive-count s 0)) ([s iteration] (if (empty? s) iteration (recursive-count (rest s) (inc iteration)))))
