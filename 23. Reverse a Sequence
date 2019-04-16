@@ -1,0 +1,13 @@
+;; Write a function which reverses a sequence - WITHOUT reverse or rseq.
+
+(= (__ [1 2 3 4 5]) [5 4 3 2 1])
+(= (__ (sorted-set 5 7 2 7)) '(7 5 2))
+(= (__ [[1 2][3 4][5 6]]) [[5 6][3 4][1 2]])
+
+;; Lists add from the front, so use reduce and conjugate to rebuild it backwards.
+
+(fn [z] (reduce (fn [x y] (conj x y)) '() z))
+
+;; Alt form for testing.
+
+(defn my-reverse [z] (reduce (fn [x y] (conj x y)) '() z))
