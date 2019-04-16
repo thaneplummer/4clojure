@@ -1,0 +1,30 @@
+;; Write a function which flattens a sequence -- WITHOUT using 'flatten'.
+
+(= (__ '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
+(= (__ ["a" ["b"] "c"]) '("a" "b" "c"))
+(= (__ '((((:a))))) '(:a))
+
+;; Take element while the remaining list is not empty.
+
+;; Test
+user=> (not (empty? '(1)))
+true
+user=> (not (empty? '()))
+false
+
+;; More tests
+user=> fugly
+[1 [2 3 [4 5] 6] 7 8 9]
+user=> (or (seq? fugly) (vector? fugly))
+true
+user=> (or (seq? (first fugly)) (vector? (first fugly)))
+false
+user=> (or (seq? (second fugly)) (vector? (second fugly)))
+true
+
+;; The Plan - if first element is not sequence/vector
+;;                 take element and conjugate to vector (adds to last position)
+;;                     recursive call with rest
+;;                 ; else
+;;                 recursive call with first
+;; Use "reduce" to eat list.
