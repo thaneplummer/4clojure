@@ -1,3 +1,4 @@
+;; From: http://www.4clojure.com/problem/28#prob-title
 ;; Write a function which flattens a sequence -- WITHOUT using 'flatten'.
 
 (= (__ '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
