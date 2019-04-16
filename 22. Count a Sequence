@@ -18,3 +18,6 @@
 
 ; One-liner without "def"
 (fn recursive-count ([s]  (recursive-count s 0)) ([s iteration] (if (empty? s) iteration (recursive-count (rest s) (inc iteration)))))
+
+;; Better function using "reduce".
+(defn my-count [z] (reduce (fn [x y] (inc x)) 0 z))
