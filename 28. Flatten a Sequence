@@ -14,6 +14,7 @@ user=> (not (empty? '()))
 false
 
 ;; More tests
+user=> (def fugly [1 [2 3 [4 5] 6] 7 8 9])
 user=> fugly
 [1 [2 3 [4 5] 6] 7 8 9]
 user=> (or (seq? fugly) (vector? fugly))
@@ -23,9 +24,28 @@ false
 user=> (or (seq? (second fugly)) (vector? (second fugly)))
 true
 
-;; The Plan - if first element is not sequence/vector
-;;                 take element and conjugate to vector (adds to last position)
-;;                     recursive call with rest
-;;                 ; else
+;; The Plan - if first element is sequence/vector
 ;;                 recursive call with first
-;; Use "reduce" to eat list.
+;;                 ; else
+;;                 take first element and conjugate to vector (adds to last position)
+;;                     recursive call with rest
+;;                 
+;; Use "reduce" to eat list?
+
+(defn flatn
+    ([x] 
+        (flatn x [0]))
+    ([x v]
+        ; If it's a sequence/vector call recursively.
+        (if (or (seq? (first x)) (vector? (first x)))
+            ; Unwrap the first element.
+            (flatn (first x) v)
+        ( ; else
+            ; Are we done?
+            (if (empty? x)
+                v ; Done.
+            ( ; else 
+                ; Otherwise pull off the first element and unwrap the rest.
+                (conj v (first x))
+                (flatn (rest x) v)))))))
+    
