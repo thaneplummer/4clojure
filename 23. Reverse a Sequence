@@ -8,6 +8,9 @@
 
 (fn [z] (reduce (fn [x y] (conj x y)) '() z))
 
-;; Alt form for testing.
+;; Too hard! Just use "into"
+into () 
 
-(defn my-reverse [z] (reduce (fn [x y] (conj x y)) '() z))
+;; Alt forms for testing.
+(defn my-reverse [z] (reduce (fn [x y] (conj x y)) '() z))  ;; Too hard
+(defn my-reverse [z] (into () z))  ;; Simpler
