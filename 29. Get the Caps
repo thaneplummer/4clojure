@@ -1,0 +1,9 @@
+;; Write a function which takes a string and returns a new string containing only the capital letters.
+
+(= (__ "HeLlO, WoRlD!") "HLOWRD")
+(empty? (__ "nothing"))
+(= (__ "$#A(*&987Zf") "AZ")
+
+;; Answer - use Regex to find, concat with "apply str".
+
+(fn [s] (apply str (re-seq #"[A-Z]" s)))
