@@ -1,0 +1,6 @@
+;; A recursive function is a function which calls itself. 
+
+(= __ ((fn foo [x] (when (> x 0) (conj (foo (dec x)) x))) 5))
+
+;; Answer
+'(5 4 3 2 1)
