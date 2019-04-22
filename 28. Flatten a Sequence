@@ -17,11 +17,7 @@ false
 user=> (def fugly [1 [2 3 [4 5] 6] 7 8 9])
 user=> fugly
 [1 [2 3 [4 5] 6] 7 8 9]
-user=> (or (seq? fugly) (vector? fugly))
-true
-user=> (or (seq? (first fugly)) (vector? (first fugly)))
-false
-user=> (or (seq? (second fugly)) (vector? (second fugly)))
+user=> (coll? fugly)
 true
 
 ;; The Plan - if first element is sequence/vector
@@ -30,22 +26,16 @@ true
 ;;                 take first element and conjugate to vector (adds to last position)
 ;;                     recursive call with rest
 ;;                 
-;; Use "reduce" to eat list?
+;; Use "reduce" to eat list? No!
+;; Use "mapcat"
+;; (mapcat f & colls)
+;; Returns the result of applying concat to the result of applying map
+;; to f and colls.  Thus function f should return a collection.
 
 (defn flatn
-    ([x] 
-        (flatn x [0]))
-    ([x v]
-        ; If it's a sequence/vector call recursively.
-        (if (or (seq? (first x)) (vector? (first x)))
-            ; Unwrap the first element.
-            (flatn (first x) v)
-        ( ; else
-            ; Are we done?
-            (if (empty? x)
-                v ; Done.
-            ( ; else 
-                ; Otherwise pull off the first element and unwrap the rest.
-                (conj v (first x))
-                (flatn (rest x) v)))))))
+    [x]
+    (if (coll? x)
+      (mapcat flatn x)
+      [x]))
+      
     
