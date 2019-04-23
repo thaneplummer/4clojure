@@ -1,0 +1,13 @@
+;; Write a function which separates the items of a sequence by an arbitrary value.
+
+(= (__ 0 [1 2 3]) [1 0 2 0 3])
+(= (apply str (__ ", " ["one" "two" "three"])) "one, two, three")
+(= (__ :z [:a :b :c :d]) [:a :z :b :z :c :z :d])
+
+;; Answer. Use "interleave" and delete the last item.
+user=> s1
+[1 2 3]
+user=> (butlast (interleave s1 (repeat (count s1) 0)))
+(1 0 2 0 3)
+
+(fn [x coll] (butlast (interleave coll (repeat (count coll) x))))
