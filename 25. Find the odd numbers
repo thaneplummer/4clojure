@@ -12,3 +12,8 @@ user=> (= (filter odd? #{1 2 3 4 5}) '(1 3 5))
 true
 user=> (= (filter (fn [x] (= 1 (mod x 2))) #{1 2 3 4 5}) '(1 3 5))
 true
+
+;; The "bit-and" function can be used; bit-and odd with 1 is 1.
+(defn filter-odd
+  [x]
+  (filter #(= 1 (bit-and 1 %)) x))
