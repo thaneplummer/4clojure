@@ -1,0 +1,37 @@
+;; Write a function which packs consecutive duplicates into sub-lists.
+
+
+(= (__ [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
+(= (__ [:a :a :b :b :c]) '((:a :a) (:b :b) (:c)))
+(= (__ [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4])))
+
+;; Answer
+;; Use "partition-by"
+partition-by identity
+
+(defn pack [coll] (partition-by identity coll))
+
+;; This is ridiculous - and doesn't work!
+(defn pack [coll]
+  (loop [xs coll, prev [], result []]
+    (if xs
+      (let [x (first xs), y (second xs), z (last prev)]
+        (if (= x y)
+          ;(println "DUP" x y)
+          (if (= z x)
+            (do
+              (println "Existing dup")
+              (recur (next xs) (concat prev x) result)
+              )
+            (do
+              (println "New dup")
+              (recur (next xs) (vector x) (conj result prev))
+              )
+            )
+          (do
+            (println "NO dup" x y)
+            (recur (next xs) (vector x) (conj result prev))
+            )
+          )
+        )
+      result)))
