@@ -1,0 +1,13 @@
+;; Given two integers, write a function which returns the greatest common divisor.
+
+(= (__ 2 4) 2)
+(= (__ 10 5) 5)
+(= (__ 5 7) 1)
+(= (__ 1023 858) 33)
+
+;; Answer
+;; The code to find factors for a number. Not optimized, but simple.
+(defn factor [n] (filter #(zero? (rem n %)) (range 1 (inc n))))
+
+;; Extend to get the common factors for both numbers, and return the max.
+(defn factors [m n] (apply max (filter #(and (zero? (rem m %)) (zero? (rem n %))) (range 1 (inc n)))))
