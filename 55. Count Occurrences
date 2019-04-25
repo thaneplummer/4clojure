@@ -1,0 +1,39 @@
+;; Write a function which returns a map containing the number of occurences of each distinct item in a sequence.
+;; "frequencies" NOT ALLOWED.
+
+(= (__ [1 1 2 3 2 1 1]) {1 4, 2 2, 3 1})
+(= (__ [:b :a :b :a :b]) {:a 2, :b 3})
+(= (__ '([1 2] [1 3] [1 3])) {[1 2] 1, [1 3] 2})
+
+;; Answer, first attempt is close, but not quite as the items are out of order.
+(defn countit [x coll] (count (filter #(= x %) coll)))
+
+(defn myfreq [coll] 
+  (for [x (set coll)
+  :let [y (countit x coll)]]
+  [x y]))
+
+(myfreq [1 1 2 3 2 1 1])
+=> ([1 4] [3 1] [2 2])
+(myfreq [:b :a :b :a :b])
+=> ([:b 3] [:a 2])
+(myfreq '([1 2] [1 3] [1 3]))
+=> ([[1 3] 2] [[1 2] 1])
+
+;; Update -- used "distinct" instead of "set, and now get the order
+(defn myfreq [coll] 
+  (for [x (distinct coll)
+  :let [y (countit x coll)]]
+  [x y]))
+  
+;; Stuff it all together... failed? Ah! Return maps! But they're in a list... FAIL!
+(defn myfreq [coll] 
+  (apply merge
+  (for [x (distinct coll)
+  :let [y ((fn [x coll] (count (filter #(= x %) coll))) x coll)]]
+  {x y})))
+
+;; Output in lists fails test. Add "apply merge" to get it out of list form.
+({1 4} {2 2} {3 1})
+({:b 3} {:a 2})
+({[1 2] 1} {[1 3] 2})
