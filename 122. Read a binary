@@ -1,0 +1,37 @@
+;; Convert a binary number, provided in the form of a string, to its numerical value.
+	
+
+(= 0     (__ "0"))
+(= 7     (__ "111"))
+(= 8     (__ "1000"))
+(= 9     (__ "1001"))
+(= 255   (__ "11111111"))
+(= 1365  (__ "10101010101"))
+(= 65535 (__ "1111111111111111"))
+
+;; Answer - this works
+(def s "1001")
+
+;; Get power of 2
+(defn pow2 [v]
+  (let [n (first v), val (second v)]
+  (if (= val \1)
+    (reduce * (repeat n 2))
+    0)))
+
+(defn binval [s]
+  (reduce +
+  (map pow2 (map-indexed vector (reverse s)))))
+
+(binval "10101010101")
+=> 1365
+
+;; UGLY!
+(defn binval [s]
+  (reduce +
+  (map (fn [v]
+  (let [n (first v), val (second v)]
+  (if (= val \1)
+    (reduce * (repeat n 2))
+    0))) 
+   (map-indexed vector (reverse s)))))
