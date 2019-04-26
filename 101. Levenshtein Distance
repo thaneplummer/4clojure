@@ -1,0 +1,48 @@
+;; Given two sequences x and y, calculate the Levenshtein distance of x and y, i. e. the minimum 
+;; number of edits needed to transform x into y. The allowed edits are:
+;; - insert a single item
+;; - delete a single item
+;; - replace a single item with another item
+
+;; WARNING: Some of the test cases may timeout if you write an inefficient solution!
+
+(= (__ "kitten" "sitting") 3)
+(= (__ "closure" "clojure") (__ "clojure" "closure") 1)
+(= (__ "xyx" "xyyyx") 2)
+(= (__ "" "123456") 6)
+(= (__ "Clojure" "Clojure") (__ "" "") (__ [] []) 0)
+(= (__ [1 2 3 4] [0 2 3 4 5]) 2)
+(= (__ '(:a :b :c :d) '(:a :d)) 2)
+(= (__ "ttttattttctg" "tcaaccctaccat") 10)
+(= (__ "gaattctaatctc" "caaacaaaaaattt") 9)
+
+;; First attempt - use simple forward similarity based off of max sequential chars.
+;; Much faster than "pure" Levenshtein and should be close. Only passes 6 of 9. (sigh)
+(defn sortlen [s t]
+  (if (> (count s) (count t))
+    [s t]
+    [t s]
+    ))
+
+(defn simil [s1 s2]
+  (let [[s-big s-small] (sortlen (apply str s1) (apply str s2))]
+    (loop [sm s-small, index-from 0, result []]
+      (do
+       (println sm index-from result)
+      (if (or (zero? (count sm)) (= (dec (count s-big)) (last result)))
+        (- (count s-big) (count result))
+        (let [y (string/index-of s-big (first sm) index-from)]
+          (if y
+            (recur (rest sm) (inc index-from) (conj result y))
+            (recur (rest sm) index-from result)
+            )))))))
+
+; "kitten" "sitting" => 3
+; "closure" "clojure" => 1
+; "xyx" "xyyyx" => 2
+; "" "123456" => 6
+; "Clojure" "Clojure" => 0 (and "" "" => 0 and [] [] => 0)
+; [1 2 3 4] [0 2 3 4 5] => 2
+; '(:a :b :c :d) '(:a :d) = 4 FAIL (counts colons as chars)
+; "ttttattttctg" "tcaaccctaccat" => 4 FAIL
+; "gaattctaatctc" "caaacaaaaaattt" => 4 FAIL
