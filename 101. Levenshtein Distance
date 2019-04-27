@@ -18,24 +18,21 @@
 
 ;; First attempt - use simple forward similarity based off of max sequential chars.
 ;; Much faster than "pure" Levenshtein and should be close. Only passes 6 of 9. (sigh)
-(defn sortlen [s t]
-  (if (> (count s) (count t))
-    [s t]
-    [t s]
-    ))
+;; Aha! A bug -- fixing it makes it pass 8 of 9. OK, rewrite "string/index-of" and it's done.
+;; Just use ".indexOf" and get rid of "sortlen" function (inline).
 
-(defn simil [s1 s2]
-  (let [[s-big s-small] (sortlen (apply str s1) (apply str s2))]
-    (loop [sm s-small, index-from 0, result []]
-      (do
-       (println sm index-from result)
-      (if (or (zero? (count sm)) (= (dec (count s-big)) (last result)))
+; PASSES 9 of 9!!
+(fn simil [s1 s2]
+  (let [[s-big s-small] (if (> (count s1) (count s2)) [s1 s2] [s2 s1])]
+    (loop [sm (vec s-small), sb (vec s-big), result []]
+      (if (zero? (count sm))
         (- (count s-big) (count result))
-        (let [y (string/index-of s-big (first sm) index-from)]
-          (if y
-            (recur (rest sm) (inc index-from) (conj result y))
-            (recur (rest sm) index-from result)
-            )))))))
+        (let [y (.indexOf sb (first sm))]
+          (if (and y (>= y 0))
+            (recur (rest sm) (drop (inc y) sb) (conj result y))
+            (recur (rest sm) sb result)
+            ))))))
+
 
 ; "kitten" "sitting" => 3
 ; "closure" "clojure" => 1
@@ -44,5 +41,5 @@
 ; "Clojure" "Clojure" => 0 (and "" "" => 0 and [] [] => 0)
 ; [1 2 3 4] [0 2 3 4 5] => 2
 ; '(:a :b :c :d) '(:a :d) = 4 FAIL (counts colons as chars)
-; "ttttattttctg" "tcaaccctaccat" => 4 FAIL
-; "gaattctaatctc" "caaacaaaaaattt" => 4 FAIL
+; "ttttattttctg" "tcaaccctaccat" => 4 FAIL v1  10 PASS v2
+; "gaattctaatctc" "caaacaaaaaattt" => 4 FAIL 9 PASS v2
