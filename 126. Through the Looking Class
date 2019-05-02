@@ -1,0 +1,22 @@
+;; Enter a value which satisfies the following:
+
+(let [x __]
+  (and (= (class x) x) x))
+
+
+;; Answer: my first thought was that 'nil' would work. And it does,
+;; but since nil evaluates to false it failed the unit test.
+;; Here's the "correct" answer:
+
+java.lang.Class
+
+user=> (def x java.lang.Class)
+#'user/x
+user=> x
+java.lang.Class
+user=> (class x)
+java.lang.Class
+user=> (= (class x) x)
+true
+user=> (and *1 x)
+java.lang.Class
