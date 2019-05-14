@@ -12,7 +12,7 @@
 (defn ssd [coll]
   (reduce +
     (for [n coll]
-      (let [digits (map #(Character/digit % 10) (vec (str n)))]
+      (let [digits (map #(Character/digit % 10) (seq (str n)))]
         (if (< n (reduce + (map #(* % %) digits)))
           1
           0
