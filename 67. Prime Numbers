@@ -6,13 +6,13 @@
 
 ;; Answer
 (defn primes [n]
-  "Seed prime list with 2, and count from 3 on (lazily), dividing by all previous primes."
+  "Seed prime list with 2, and count by 2 from 3 on (lazily), dividing by all previous primes."
   (loop [primelist [2], x 3]
     (if (= n (count primelist))
       primelist   ;  We're done.
       (if (some zero? (map #(mod x %) primelist))
-        (recur primelist (inc x))
-        (recur (conj primelist x) (inc x))))))
+        (recur primelist (+ x 2))
+        (recur (conj primelist x) (+ x 2))))))
 
 
 ;; amcnamara's solution:
