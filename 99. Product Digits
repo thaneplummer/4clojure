@@ -1,0 +1,16 @@
+;; Write a function which multiplies two numbers and returns the result as a sequence of its digits.
+
+(= (__ 1 1) [1])
+(= (__ 99 9) [8 9 1])
+(= (__ 999 99) [9 8 9 0 1])
+
+;; Answer
+(defn prod-digits [a b]
+  (map #(Character/digit % 10) (seq (str (* a b)))))
+
+
+;; jeff_terrell's solution:
+(fn [a b] (map #(- (int %) 48) (str (* a b))))
+
+;; nikelandjelo's solution:
+(fn [a b] (->> (* a b) str (map #(Character/digit % 10))))
