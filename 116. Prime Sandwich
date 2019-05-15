@@ -1,0 +1,53 @@
+;; A balanced prime is a prime number which is also the mean of the primes directly before 
+;; and after it in the sequence of valid primes. 
+;; Create a function which takes an integer n, and returns true iff it is a balanced prime.
+
+(= false (__ 4))
+(= true (__ 563))
+(= 1103 (nth (filter __ (range)) 15))
+
+;; Answer
+(defn balanced-prime [n]
+  "Get list of 3 primes - [prev, n, next] and test for balance."
+  (if (> 5 n)
+    false
+  (loop [primelist [2 3 5], x 7]
+    (if (<= n (last (butlast primelist)))
+      ;  We're done.  No error checking for length.
+      (let [[x y z] (take 3 (reverse primelist))]
+        (if (and (= n y) (= (+ x z) (+ y y)))
+          true
+          false
+          ))
+      ; Not done, so build prime list.
+      (if (some zero? (map #(mod x %) primelist))
+        (recur primelist (+ x 2))
+        (recur (conj primelist x) (+ x 2)))))))
+
+;; amcnamara's solution:
+((fn [p]
+   (fn [b]
+     (let [[a c] (map #(first (filter p (rest (iterate % b)))) [dec inc])]
+       (and (> b 2)
+            (p b)
+            (= b (/ (+ a c) 2))))))
+ (fn [i] (not-any? #(= 0 (mod i %)) (range 2 i))))
+ 
+;; austintaylor's solution:
+(fn [x]
+  (and (> x 3)
+  (let [prime? (fn [x] (not (some #(zero? (mod x %)) (range 2 x))))
+        previous (first (filter prime? (range (inc x) 10e7)))
+        next (first (filter prime? (range (dec x) 1 -1)))]
+    (and
+      (prime? x)
+      (= x (/ (+ next previous) 2))))))
+
+;; adereth's solution:
+(fn [n]
+  (and (> n 3)
+  (let [p (fn [x] (every? #(< 0 (mod x %)) (range 2 x)))
+        b (first (filter p (reverse (range 2 n))))
+        a (first (filter p (drop (+ n 1) (range))))]
+    (and (p n) (= n (/ (+ a b) 2))))))
+    
