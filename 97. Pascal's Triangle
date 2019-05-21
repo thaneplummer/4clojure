@@ -23,7 +23,7 @@
     (if (= row n) ; Done?
       prev-row
       (recur (inc row) 
-        (flatten (vector 1 (map #(+ (first %) (second %)) (partition 2 1 prev-row)) 1))))))
+        (concat [1] (map #(+ (first %) (second %)) (partition 2 1 prev-row)) [1])))))
       
 
 ; anjensan's solution:
