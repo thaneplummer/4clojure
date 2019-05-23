@@ -1,0 +1,38 @@
+;; A number is "perfect" if the sum of its divisors equal the number itself. 6 is a perfect number because 1+2+3=6. 
+;; Write a function which returns true for perfect numbers and false otherwise.
+
+
+(= (__ 6) true)
+(= (__ 7) false)
+(= (__ 496) true)
+(= (__ 500) false)
+(= (__ 8128) true)
+
+;; Answer
+(fn perfectnum [n]
+  (= n 
+     (reduce + (filter #(zero? (mod n %)) (range 1 n)))))
+
+;; 1067's solution:
+(fn [n]
+   (->> (range 1 n)
+        (filter #(zero? (mod n %)))
+        (apply +)
+        (= n)))
+
+;; adereth's solution:
+(fn [x]
+  (let [factors (filter #(zero? (mod x %)) (range 1 x))]
+    (= x (apply + factors))))
+
+;; mfikes's solution:
+(fn [n]
+  (let [divisors (filter #(zero? (rem n %)) (range 1 n))]
+    (= n (apply + divisors))))
+
+;; nikelandjelo's solution:
+(fn perfect? [n]
+        (= (->> (range 1 n)
+                (filter #(zero? (rem n %)))
+                (apply +))
+           n))
