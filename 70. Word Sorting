@@ -1,0 +1,32 @@
+;; Write a function that splits a sentence up into a sorted list of words. 
+;; Capitalization should not affect sort order and punctuation should be ignored.
+
+
+(= (__  "Have a nice day.")
+   ["a" "day" "Have" "nice"])
+
+(= (__  "Clojure is a fun language!")
+   ["a" "Clojure" "fun" "is" "language"])
+
+(= (__  "Fools fall for foolish follies.")
+   ["fall" "follies" "foolish" "Fools" "for"])
+
+
+;; Answer
+(fn sortwords [s]
+  (sort-by clojure.string/lower-case (re-seq #"\w+" s)))
+
+;; anjensan's solution:
+#(sort-by (memfn toUpperCase) (re-seq #"\w+" %))
+
+;; mfikes's solution:
+#(sort-by clojure.string/lower-case (clojure.string/split (apply str (butlast %)) #" "))
+
+;; 1067's solution:
+#(->> (re-seq #"\w+" %)
+      (sort-by clojure.string/lower-case))
+      
+;; amcnamara's solution:
+(fn [s]
+  (sort #(.compareToIgnoreCase % %2) 
+        (clojure.string/split (clojure.string/replace s #"[.!]" "") #" ")))
