@@ -1,0 +1,43 @@
+;; Given a string of comma separated integers, write a function which returns a new 
+;; comma separated string that only contains the numbers which are perfect squares.
+
+(= (__ "4,5,6,7,8,9") "4,9")
+(= (__ "15,16,25,36,37") "16,25,36")
+
+;; Answer:
+(fn fps [s]
+  (clojure.string/join "," 
+    (filter #(let [x (read-string %), y (int (Math/sqrt x))] (= (* y y) x)) 
+            (re-seq #"\d+" s))))
+
+
+;; 1067's solution:
+#(->> (str "[" % "]")
+      (read-string)
+      (filter (fn [v] (let [p (int (Math/sqrt v))] (= v (* p p)))))
+      (clojure.string/join ","))
+
+;; anjensan's solution:
+(fn [s]
+    (->> (read-string (str \[ s \]))
+      (filter #(let [q (Math/sqrt %)] (= % (* q q))))
+      (interpose \,)
+      (apply str)))
+      
+;; austintaylor's solution:
+(fn [s]
+  (apply str (interpose ","
+    (filter #(let [root (Math/sqrt %)] (= root (int root)))
+      (map #(Integer/parseInt %) (.split s ","))))))
+      
+;; jeff_terrell's solution:
+(fn [s]
+  (let [xs (map #(Integer. %) (clojure.string/split s #","))
+        p? (fn [x] (some #(= x (* % %)) (range 2 x)))]
+    (clojure.string/join "," (filter p? xs))))
+
+;; amcnamara's solution:
+(fn [s]
+  (clojure.string/join ","
+    (filter #(some #{(Integer. %)} (map (fn [i] (* i i)) (range (Integer. %))))
+            (clojure.string/split s #","))))
