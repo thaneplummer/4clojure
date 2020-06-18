@@ -21,6 +21,10 @@
 ;; Aha! A bug -- fixing it makes it pass 8 of 9. OK, rewrite "string/index-of" and it's done.
 ;; Just use ".indexOf" and get rid of "sortlen" function (inline).
 
+
+;; Copyright (c) 2019 Thane Plummer. Copying and redistribution 
+;; is prohibited without the express permission of the author.
+
 ; PASSES 9 of 9!!
 (fn simil [s1 s2]
   (let [[s-big s-small] (if (> (count s1) (count s2)) [s1 s2] [s2 s1])]
